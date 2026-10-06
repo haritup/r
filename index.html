@@ -168,7 +168,7 @@ function money(n){return "&#8377; "+Number(n||0).toLocaleString("en-IN",{minimum
 var DETAIL_LABELS={
   BN:"BENEFICIARY",BK:"BANK",AC:"ACCOUNT NO",GW:"GATEWAY",CN:"CONSUMER NO",BD:"BILL DETAILS",NM:"CONSUMER NAME",PM:"PAYMENT MODE",
   TX:"ROINET TXN ID",RC:"RECEIVER",GM:"GPAY/UPI NO",VP:"VPA ID",UR:"UPI REF NO",PB:"PAID BY",MB:"MOBILE NO",PV:"PAID VIA",LD:"LOAN DETAILS",DT:"DETAILS",
-  SN:"பணம் அனுப்புபவர்",SM:"மொபைல் எண்",RN:"பணம் பெறுபவர்",RM:"மொபைல் எண்",UT:"UTR எண்",CM:"CUSTOMER NAME"
+  SN:"பணம் அனுப்புபவர்",SM:"மொபைல் எண்",RN:"பணம் பெறுபவர்",RM:"மொபைல் எண்",UT:"UTR எண்",CM:"CUSTOMER NAME",PC:"PRODUCT CODE",PD:"PRODUCT DETAILS",TA:"TOTAL AMOUNT"
 };
 function labelText(code){
   var c=String(code||"");
@@ -232,6 +232,15 @@ function renderDetailRows(details){
       out.push(["UT",qUr||"-"]);
       return out;
     }
+    if(/mobile accessories/.test(svc)){
+      var ma=[];
+      for(var i=0;i<d.length;i++){
+        var x=d[i]||[];
+        if(String(x[0]||"")==="C35" || String(x[2]||"")==="C35") continue;
+        ma.push(x);
+      }
+      return ma;
+    }
     if(/money transfer|dmt/.test(svc)){
       out.push(["SN",r.name||"-"]);
       var ben="", bank="", acc="";
@@ -254,14 +263,18 @@ function renderDetailRows(details){
 
   var details=particularsForService();
   var detailHtml=details.length?'<div class="detailsBox"><div class="detailsTitle">PARTICULARS / SERVICE DETAILS</div>'+renderDetailRows(details)+'</div>':'';
+  var noChargeService=/xerox\/printout|stationary|mobile accessories/.test(svc);
+  var receiptCharge=noChargeService?0:(Number(r.chg)||0);
+  var receiptTotal=(Number(r.amt)||0)+receiptCharge;
+  var amountTitle=th.l||"Amount";
+  var amountBlock='<div class="brk"><div class="l"><span>'+amountTitle+'</span><b>'+money(r.amt)+'</b></div>'+
+      (noChargeService?'':'<div class="l"><span>MDP Service Charge</span><b>'+money(receiptCharge)+'</b></div>')+
+      '<div class="t"><span>NET TOTAL</span><b>'+money(receiptTotal)+'</b></div></div>';
   o.innerHTML=
    '<div class="bn"><div class="bi"><svg viewBox="0 0 24 24">'+ICO[th.i]+'</svg></div><div><b>'+th.t+'</b></div></div>'+ 
    '<div class="tear"></div>'+ 
    '<div class="rows">'+rows.map(function(x){return '<div class="row"><span>'+x[0]+'</span><span>'+esc(x[1])+'</span></div>'}).join("")+'</div>'+ 
-   detailHtml+
-   '<div class="brk"><div class="l"><span>'+(th.l||"Amount")+'</span><b>'+money(r.amt)+'</b></div>'+ 
-   '<div class="l"><span>MDP Service Charge</span><b>'+money(r.chg)+'</b></div>'+ 
-   '<div class="t"><span>NET TOTAL</span><b>'+money(r.amt+r.chg)+'</b></div></div>'+ 
+   detailHtml+amountBlock+
    '<div class="btns"><a class="b1" href="tel:7871611999">&#128222; Call Shop</a><a class="b2" href="'+REVIEW_URL+'" target="_blank" rel="noopener">&#9733; Rate 5 Stars</a></div>';
 })();
 </script>
