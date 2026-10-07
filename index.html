@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#011E53">
+<meta name="mdp-receipt-version" content="V193-LIGHT-FIELDS">
 <title>Digital Receipt - Maharaaj Digi Point</title>
 <style>
 :root{--navy:#011E53;--org:#FE6E01;--mut:#6b7280;--ln:#e7e9ee;--th:#011E53;--th2:#0a3aa8}
@@ -20,7 +21,7 @@ body{margin:0;min-height:100vh;padding:22px 14px 30px;color:#111827;
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .top{padding:18px 14px 10px;text-align:center;background:#fff}
 .top img{width:172px;height:auto;display:block;margin:0 auto 8px}
-.brandName{color:#011E53;font-size:21px;font-weight:900;letter-spacing:.4px;line-height:1.05;margin:0 0 7px;white-space:nowrap}
+.brandName{color:#011E53;font-size:24px;font-weight:900;letter-spacing:.4px;line-height:1.05;margin:0 0 7px;white-space:nowrap}
 .brandName .mdp{color:#FE6E01}
 .brandStrip{display:block;width:100%;padding:5px 5px;border-radius:8px;background:#011E53;color:#fff;font-size:9.2px;font-weight:800;letter-spacing:.12px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:clip}
 .brandAddress{margin-top:6px;color:#1f2937;font-size:12.8px;font-weight:700;line-height:1.2}
@@ -49,27 +50,32 @@ body{margin:0;min-height:100vh;padding:22px 14px 30px;color:#111827;
 .amt{font-size:42px;font-weight:800;color:var(--navy);letter-spacing:-.5px;line-height:1.15}
 .amt i{font-style:normal;color:var(--th);margin-right:4px}
 .svc{display:inline-block;margin-top:6px;padding:4px 14px;border-radius:99px;background:#eef2ff;color:var(--th);font-weight:700;font-size:13px}
-.brk{margin:10px 18px 0;border:1px solid var(--ln);border-radius:16px;overflow:hidden;animation:up .6s .2s ease both}
-.brk .l{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #f0f1f5}
-.brk .l span{color:var(--mut);font-size:14px}
+.brk{margin:12px 18px 0;border:1px solid #dbe5f3;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(1,30,83,.05);animation:up .6s .2s ease both}
+.brk .l{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;margin:4px 6px;border:1px solid #e6edf7;border-radius:10px;background:#f8fbff}
+.brk .l span{color:#667085;font-size:14px;font-weight:600}
 .brk .l b{font-size:17px;color:#111827;white-space:nowrap}
-.brk .t{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;color:#fff;background:linear-gradient(135deg,var(--th),var(--th2))}
+.brk .t{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 16px;margin-top:5px;color:#fff;background:linear-gradient(135deg,var(--th),var(--th2))}
 .brk .t span{font-weight:800;letter-spacing:.8px;font-size:14px}
 .brk .t b{font-size:25px;font-weight:800;white-space:nowrap}
 .tear{margin:10px 18px 3px;border-top:2px dashed var(--ln)}
 .rows{padding:2px 22px 4px;animation:up .6s .3s ease both}
-.metaTop{padding:2px 22px 4px;animation:up .6s .05s ease both}
-.row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid #f0f1f5}
-.row:last-child{border-bottom:0}
-.row span:first-child{color:var(--mut);font-size:14px;white-space:nowrap}
-.row span:last-child{font-weight:700;text-align:right;word-break:break-word}
-.detailsBox{margin:12px 18px 0;border:1px solid var(--ln);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(1,30,83,.05);animation:up .6s .35s ease both}
-.detailsTitle{padding:9px 14px;background:#f4f7fb;color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.8px}
-.drow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-top:1px solid #f0f1f5}
-.dpair{padding:7px 11px;min-width:0}
-.dpair + .dpair{border-left:1px solid #f0f1f5}
-.dlab{display:block;color:var(--mut);font-size:10.5px;font-weight:800;letter-spacing:.3px;margin-bottom:2px}
+.metaTop{margin:10px 18px 0;padding:8px 12px;background:#f6f9ff;border:1px solid #dbe5f3;border-radius:16px;box-shadow:0 4px 14px rgba(1,30,83,.05);animation:up .6s .05s ease both}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 10px;margin:3px 0;border:1px solid #e6edf7;border-radius:10px;background:#fbfdff}
+.row:last-child{margin-bottom:0}
+.row span:first-child{color:#65748b;font-size:14px;font-weight:600;white-space:nowrap}
+.row span:last-child{color:#111827;font-weight:800;text-align:right;word-break:break-word}
+.customerTop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 18px 0;padding:11px 14px;border:1px solid #d9e7dc;border-radius:16px;background:#f4fff8;box-shadow:0 4px 14px rgba(22,101,52,.05);animation:up .6s .12s ease both;min-height:54px}
+.customerTop .cnm{display:block;color:#111827;font-size:16px;font-weight:900;letter-spacing:.1px;line-height:1.2}
+.customerTop .cnm::before{content:"CUSTOMER NAME";display:block;margin-bottom:3px;color:#2f7d4a;font-size:10px;font-weight:900;letter-spacing:.9px}
+.customerTop .cmob{display:block;color:#355066;font-size:12px;font-weight:800;text-align:right;white-space:nowrap}
+.detailsBox{margin:12px 18px 0;border:1px solid #dbe5f3;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(1,30,83,.05);animation:up .6s .35s ease both}
+.detailsTitle{padding:9px 14px;background:#eef4fb;color:var(--navy);font-size:11px;font-weight:900;letter-spacing:.8px}
+.drow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-top:1px solid #e7eef7;background:#f8fbff}
+.dpair{padding:8px 11px;min-width:0}
+.dpair + .dpair{border-left:1px solid #e7eef7}
+.dlab{display:block;color:#667085;font-size:10.5px;font-weight:800;letter-spacing:.3px;margin-bottom:2px}
 .dval{display:block;color:#111827;font-size:14px;font-weight:800;line-height:1.25;word-break:break-word}
+.partySender{color:#d92323!important}.partyReceiver{color:#169447!important}
 .detailsBox .drow.one{grid-template-columns:1fr}
 .detailsBox .drow.one .dpair + .dpair{display:none}
 .btns{display:flex;gap:10px;padding:8px 20px 18px}
@@ -82,6 +88,11 @@ body{margin:0;min-height:100vh;padding:22px 14px 30px;color:#111827;
 .ft{padding:14px 20px 18px;text-align:center;font-size:12px;color:var(--mut)}
 .bad{padding:30px 22px;text-align:center}
 .note{max-width:420px;margin:16px auto 0;text-align:center;font-size:11.5px;color:rgba(255,255,255,.72)}
+@media(max-width:520px){
+  .customerTop{flex-direction:column;align-items:flex-start}
+  .customerTop .cmob{text-align:left}
+  .row{padding:9px 8px}
+}
 @media(prefers-reduced-motion:reduce){.card,.bn,.hero,.rows,.brk{animation:none}.bar,.bar:after,.bn:after{animation:none}}
 </style>
 </head>
@@ -255,10 +266,13 @@ function renderDetailRows(details){
   for(var i=0;i<details.length;i++){
     var row=details[i]||[];
     if(row.length>=4){
-      out+='<div class="drow"><div class="dpair"><span class="dlab">'+esc(labelText(row[0]))+'</span><span class="dval">'+esc(row[1]||"-")+'</span></div>'+ 
-           '<div class="dpair"><span class="dlab">'+esc(labelText(row[2]))+'</span><span class="dval">'+esc(row[3]||"-")+'</span></div></div>';
+      var v1code=String(row[0]||""); var v1cls=(v1code==="SN")?"dval partySender":(v1code==="RN"?"dval partyReceiver":"dval");
+      var v2code=String(row[2]||""); var v2cls=(v2code==="SN")?"dval partySender":(v2code==="RN"?"dval partyReceiver":"dval");
+      out+='<div class="drow"><div class="dpair"><span class="dlab">'+esc(labelText(row[0]))+'</span><span class="'+v1cls+'">'+esc(row[1]||"-")+'</span></div>'+ 
+           '<div class="dpair"><span class="dlab">'+esc(labelText(row[2]))+'</span><span class="'+v2cls+'">'+esc(row[3]||"-")+'</span></div></div>';
     }else if(row.length>=2 && row[0]){
-      out+='<div class="drow one"><div class="dpair"><span class="dlab">'+esc(row[0])+'</span><span class="dval">'+esc(row[1]||"-")+'</span></div></div>';
+      var loneCode=String(row[0]||""); var loneCls=(loneCode==="SN")?"dval partySender":(loneCode==="RN"?"dval partyReceiver":"dval");
+      out+='<div class="drow one"><div class="dpair"><span class="dlab">'+esc(labelText(row[0]))+'</span><span class="'+loneCls+'">'+esc(row[1]||"-")+'</span></div></div>';
     }
   }
   return out;
