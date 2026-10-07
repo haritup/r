@@ -215,8 +215,8 @@ function renderCompactDetails(r){
   if(code==="u") rows=[pair("பணம் அனுப்புபவர்",r.name),pair("பணம் பெறுபவர்",p[0]),pair("UTR எண்",p[1])];
   else if(code==="q") rows=[pair("பணம் அனுப்புபவர்",p[0]),pair("பணம் பெறுபவர்",p[1]),pair("UTR எண்",p[2])];
   else if(code==="rq") rows=[pair("பணம் செலுத்துபவர்",p[0]),pair("Payer VPA",p[1]),pair("Reference",p[2])];
-  else if(code==="e") rows=[pair("Customer Name",r.name),pair("Consumer Number",p[0]),pair("Bill Details",p[1])];
-  else if(code==="l") rows=[pair("Customer Name",r.name),pair("Loan Details",p[0])];
+  else if(code==="e") rows=[pair("Customer Name",r.name),pair("Consumer Number",p[0]),pair("Bill Details",p[1]),pair("BBPS Via",p[2]||"Roinet BBPS")];
+  else if(code==="l") rows=[pair("Customer Name",r.name),pair("Loan Details",p[0]),pair("BBPS Via",p[1]||"Roinet BBPS")];
   else if(code==="m") rows=[pair("Sender Name",r.name),pair("Beneficiary Name",p[0]),pair("Bank Name",p[1]),pair("Account Number",p[2])];
   else if(code==="ma") rows=[pair("Product Name",p[0]),pair("Product Code",p[1]),pair("Product Details",p[2])];
   else if(code==="r") rows=[pair("Mobile Number",p[0]),pair("Recharge Details",p[1])];
