@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#011E53">
-<meta name="mdp-receipt-version" content="V191-META-TOP-20261007">
-<!-- MDP DIGITAL RECEIPT V191: finalized layout; Receipt No + Date & Time immediately below animated line. -->
 <title>Digital Receipt - Maharaaj Digi Point</title>
 <style>
 :root{--navy:#011E53;--org:#FE6E01;--mut:#6b7280;--ln:#e7e9ee;--th:#011E53;--th2:#0a3aa8}
@@ -152,6 +150,62 @@ function b64ToUtf8(s){
 function parseReceipt(h){
   h=(h||"").replace(/^#/ , "");
   if(!h) return null;
+
+  /* V4.194 compact service QR: #q/<code>/<receipt>/<amount>/<charge>/<ddmmyyHHMM>/<name>/<mobile>/... */
+  if(h.indexOf("q/")===0){
+    try{
+      var q=h.slice(2).split("/").map(function(s){
+        try{return decodeURIComponent(s)}catch(e){return s}
+      });
+      if(q.length<5) return null;
+      var code=String(q[0]||""), no=String(q[1]||""), amt=parseFloat(q[2]);
+      if(!no || !isFinite(amt)) return null;
+      var chg=parseFloat(q[3]); if(!isFinite(chg)) chg=0;
+      var ds=String(q[4]||""), when="";
+      if(/^\d{10}$/.test(ds)){
+        var hh=+ds.slice(6,8), ap=hh>=12?"PM":"AM"; hh=hh%12||12;
+        when=ds.slice(0,2)+"-"+ds.slice(2,4)+"-20"+ds.slice(4,6)+", "+(hh<10?"0":"")+hh+":"+ds.slice(8,10)+" "+ap;
+      }
+      var name=String(q[5]||""), mobile=String(q[6]||""), p=q.slice(7);
+      var svcMap={e:"EB Bill",l:"Loan Payment",u:"GPay/PhonePe",q:"QR Withdrawal",rq:"Roinet QR Withdrawal",
+        m:"Money Transfer",a:"Roinet AEPS",t:"ATM Withdrawal",r:"Mobile Recharge",d:"DTH Recharge",o:"Online Service",
+        x:"Xerox/Printout",s:"Stationary",ma:"Mobile Accessories",p:"PAN Card",v:"PVC Card",f:"Photo Print",
+        h:"Aadhaar Lamination",tt:"Train Ticket",b:"Bus Ticket",cd:"Customer Due",dc:"Due Collection",dt:"Distributor Topup",
+        dp:"Distributor Payment",oi:"Owner Investment",ow:"Owner Withdrawal",it:"Internal Transfer",ex:"Expense",z:"Other"};
+      var svc=svcMap[code]||code;
+      var details=[];
+      function pair(a,b){details.push([a||"DT",b||"-"]);}
+      if(code==="e"){
+        details.push(["NM",name||"-","CN",p[0]||"-"]);
+        if(p[1]) pair("BD",p[1]);
+      }else if(code==="l"){
+        details.push(["CM",name||"-","LD",p[0]||"-"]);
+      }else if(code==="u"){
+        details.push(["RC",p[0]||"-","UR",p[1]||"-"]);
+      }else if(code==="q"){
+        details.push(["PB",p[0]||"-","UR",p[2]||p[1]||"-"]);
+        name=p[1]||""; /* receiver/customer is the top identity for QR Withdrawal */
+      }else if(code==="rq"){
+        details.push(["PB",p[0]||"-","VP",p[1]||"-"]);
+        if(p[2]) pair("UR",p[2]);
+      }else if(code==="m"){
+        details.push(["BN",p[0]||"-","BK",p[1]||"-"]);
+        if(p[2]) pair("AC",p[2]);
+      }else if(code==="ma"){
+        details.push(["PN",p[0]||"-","PC",p[1]||"-"]);
+        if(p[2]) pair("PD",p[2]);
+      }else if(code==="r"){
+        details.push(["MB",p[0]||"-","DT",p[1]||"-"]);
+      }else if(code==="d"){
+        details.push(["DT",p[0]||"-","CN",p[1]||"-"]);
+        if(p[2]) pair("MB",p[2]);
+      }else if(p.length){
+        pair("DT",p[0]);
+      }
+      return {no:no,svc:svc,amt:amt,chg:chg,when:when,name:name,mobile:mobile,cno:"",details:details,mode:""};
+    }catch(e){ return null; }
+  }
+
   /* V4.183 full-particulars QR: #v2/<base64url-json> */
   if(h.indexOf("v2/")===0){
     try{
@@ -168,6 +222,7 @@ function parseReceipt(h){
       };
     }catch(e){ return null; }
   }
+
   /* Backward-compatible old QR format */
   var p=h.split("/").map(function(s){try{return decodeURIComponent(s).replace(/_/g," ")}catch(e){return s}});
   if(p.length<4) return null;
@@ -262,7 +317,7 @@ function renderDetailRows(details){
       out.push(["UT",ur||"-"]);
       return out;
     }
-    if(/qr/.test(svc)){
+    if(/qr/.test(svc) && !/roinet qr/.test(svc)){
       out.push(["SN",find("PB")||"-","RN",r.name||"-"]);
       var qUr=find("UR");
       out.push(["UT",qUr||"-"]);
